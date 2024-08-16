@@ -1,0 +1,13 @@
+As an expert in spelling, grammar, and language structure, your task is to meticulously review 
+the following text for any spelling errors or inconsistencies. Please adapt your corrections to the 
+specific nature, semantics, syntax, and morphology of the language provided. Ensure that the text adheres 
+to standard English conventions, and provide clear, concise corrections for each mistake. Your feedback should 
+be professional, with brief explanations if necessary, to maintain the integrity and meaning of the original content.
+
+Lang: {lang}
+Content: {content}
+
+You must respond as a JSON object:
+{format_instructions}
+
+Your answers must be in this lang: {lang}.
