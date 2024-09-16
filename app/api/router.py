@@ -1,7 +1,9 @@
 from app.api.features.ai_spelling_checker import compile_chain
 from app.api.features.ai_writing_enhancement import compile_workflow
 from app.api.features.ai_addition_of_connectors import compile_workflow as complie_workflow_connectors
+from app.api.features.ai_textual_tone_shifts import compile_workflow as complie_workflow_tone_shift
 from app.api.features.schemas.ai_addition_of_connectors_schemas import AIAdditionOfConnectorsInputSchema
+from app.api.features.schemas.ai_textual_tone_shifts_schemas import AITextualToneShiftInputSchema
 from app.api.features.schemas.ai_writing_enhancement_schemas import AIWritingEnhancementInputSchema
 from app.api.features.schemas.schemas import RequestSchema, SpellingCheckerRequestArgs
 from fastapi import APIRouter, Depends
@@ -64,5 +66,25 @@ async def submit_tool( data: AIAdditionOfConnectorsInputSchema, _ = Depends(key_
     )    
 
     logger.info("The addition of connectors has been successfully done")
+
+    return result
+
+@router.post("/textual-tone-shifts")
+async def submit_tool( data: AITextualToneShiftInputSchema, _ = Depends(key_check)):
+    logger.info(f"Args. loaded successfully: {data}")
+
+    textual_tone_shifts_workflow = complie_workflow_tone_shift()
+
+    logger.info("Developing the Textual Tone Shift")
+
+    result = textual_tone_shifts_workflow.invoke(
+        {
+            "text": data.text,
+            "lang": data.lang,
+            "target_tone": data.target_tone
+        }
+    )    
+
+    logger.info("The textual tone shifting has been successfully done")
 
     return result
