@@ -4,3 +4,7 @@ langchain-google-genai
 langchain_core
 uvicorn[standard]
 python-dotenv
+langchain_community
+langgraph
+langchain-openai
+openai

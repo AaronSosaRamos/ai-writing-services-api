@@ -1,4 +1,6 @@
 from app.api.features.ai_spelling_checker import compile_chain
+from app.api.features.ai_writing_enhancement import compile_workflow
+from app.api.features.schemas.ai_writing_enhancement_schemas import AIWritingEnhancementInputSchema
 from app.api.features.schemas.schemas import RequestSchema, SpellingCheckerRequestArgs
 from fastapi import APIRouter, Depends
 from app.api.logger import setup_logger
@@ -24,3 +26,22 @@ async def submit_tool( data: RequestSchema, _ = Depends(key_check)):
     logger.info("The spelling checking analysis has been successfully generated")
 
     return results
+
+@router.post("/writing-enhancement")
+async def submit_tool( data: AIWritingEnhancementInputSchema, _ = Depends(key_check)):
+    logger.info(f"Args. loaded successfully: {data}")
+
+    writing_enhancement_workflow = compile_workflow()
+
+    logger.info("Developing the Writing Enhancement")
+
+    result = writing_enhancement_workflow.invoke(
+        {
+            "text": data.text,
+            "lang": data.lang
+        }
+    )    
+
+    logger.info("The writing enhancement has been successfully done")
+
+    return result
