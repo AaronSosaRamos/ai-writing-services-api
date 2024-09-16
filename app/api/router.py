@@ -1,5 +1,7 @@
 from app.api.features.ai_spelling_checker import compile_chain
 from app.api.features.ai_writing_enhancement import compile_workflow
+from app.api.features.ai_addition_of_connectors import compile_workflow as complie_workflow_connectors
+from app.api.features.schemas.ai_addition_of_connectors_schemas import AIAdditionOfConnectorsInputSchema
 from app.api.features.schemas.ai_writing_enhancement_schemas import AIWritingEnhancementInputSchema
 from app.api.features.schemas.schemas import RequestSchema, SpellingCheckerRequestArgs
 from fastapi import APIRouter, Depends
@@ -43,5 +45,24 @@ async def submit_tool( data: AIWritingEnhancementInputSchema, _ = Depends(key_ch
     )    
 
     logger.info("The writing enhancement has been successfully done")
+
+    return result
+
+@router.post("/addition-of-connectors")
+async def submit_tool( data: AIAdditionOfConnectorsInputSchema, _ = Depends(key_check)):
+    logger.info(f"Args. loaded successfully: {data}")
+
+    addition_of_connectors_workflow = complie_workflow_connectors()
+
+    logger.info("Developing the Addition of Connectors")
+
+    result = addition_of_connectors_workflow.invoke(
+        {
+            "text": data.text,
+            "lang": data.lang
+        }
+    )    
+
+    logger.info("The addition of connectors has been successfully done")
 
     return result
