@@ -2,7 +2,9 @@ from app.api.features.ai_spelling_checker import compile_chain
 from app.api.features.ai_writing_enhancement import compile_workflow
 from app.api.features.ai_addition_of_connectors import compile_workflow as complie_workflow_connectors
 from app.api.features.ai_textual_tone_shifts import compile_workflow as complie_workflow_tone_shift
+from app.api.features.ai_plagiarism_check import compile_workflow as complie_workflow_plagiarism_check
 from app.api.features.schemas.ai_addition_of_connectors_schemas import AIAdditionOfConnectorsInputSchema
+from app.api.features.schemas.ai_plagiarism_check_schemas import AIPlagiarismCheckInputSchema
 from app.api.features.schemas.ai_textual_tone_shifts_schemas import AITextualToneShiftInputSchema
 from app.api.features.schemas.ai_writing_enhancement_schemas import AIWritingEnhancementInputSchema
 from app.api.features.schemas.schemas import RequestSchema, SpellingCheckerRequestArgs
@@ -86,5 +88,25 @@ async def submit_tool( data: AITextualToneShiftInputSchema, _ = Depends(key_chec
     )    
 
     logger.info("The textual tone shifting has been successfully done")
+
+    return result
+
+@router.post("/plagiarism-check")
+async def submit_tool( data: AIPlagiarismCheckInputSchema, _ = Depends(key_check)):
+    logger.info(f"Args. loaded successfully: {data}")
+
+    plagiarism_check_workflow = complie_workflow_plagiarism_check()
+
+    logger.info("Developing the Plagiarism Check")
+
+    result = plagiarism_check_workflow.invoke(
+        {
+            "original_text": data.original_text,
+            "comparison_text": data.comparison_text,
+            "lang": data.lang
+        }
+    )    
+
+    logger.info("The plagiarism check has been successfully done")
 
     return result
